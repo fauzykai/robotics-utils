@@ -2,7 +2,7 @@
 // InverseKinem.sci
 // =================================================================================
 
-function [Ret,Joints] = d3rInverseKinem ( KinemParams,TCP0 )
+function [Ret, Joints] = d3rInvKinem ( KinemParams, TCP0 )
 //
 // DESCRIPTION
 //  Solves the Inverse Kinematics problem of a delta-3 robot. 
@@ -35,14 +35,15 @@ function [Ret,Joints] = d3rInverseKinem ( KinemParams,TCP0 )
   
   cfgPars = KinemParams;
   
-  //   
+  // Solve IK of each leg
   // --------------------------------------------
   
   theta1 = 0;
   theta2 = 0;
   theta3 = 0;
   
-  // Leg1
+  // Leg 1 [ F1,G1,E1 ] ---
+  // It is right leg.
   
   x = x0;
   y = y0;
@@ -55,7 +56,7 @@ function [Ret,Joints] = d3rInverseKinem ( KinemParams,TCP0 )
     return [Ret,Joints];
   end
   
-  // Leg 2. 
+  // Leg 2 [ F2,G2,E2 ] --- 
   // Rotate coords to 240 (or -120) degrees
   
   x = x0*c240 - y0*s240;
@@ -69,7 +70,7 @@ function [Ret,Joints] = d3rInverseKinem ( KinemParams,TCP0 )
     return [Ret,Joints];
   end
   
-  // Leg 3
+    // Leg 3 [ F2,G2,E2 ] ---
   // Rotate coords to +120 degrees
   
   x = x0*c120 - y0*s120;
@@ -83,6 +84,7 @@ function [Ret,Joints] = d3rInverseKinem ( KinemParams,TCP0 )
     return [Ret,Joints];
   end
   
+  // Return joints
   // --------------------------------------------
   
   Ret = 1;
@@ -91,9 +93,7 @@ function [Ret,Joints] = d3rInverseKinem ( KinemParams,TCP0 )
   
 endfunction
 
-// =================================================================================
-// __d3rCalcJointAngle
-// =================================================================================
+// ---------------------------------------------------------------------------------
 
 function [Ret,Theta] = __d3rCalcJointAngle ( Config,TCP0 )
 //
@@ -117,13 +117,12 @@ function [Ret,Theta] = __d3rCalcJointAngle ( Config,TCP0 )
   z0 = TCP0(3);
   
   if z0 == 0 then
-    // This is necessary to avoid division by zero in the following code.
-    log_write2( "ERROR - z0 is equal to 0");
+    // ERROR - This is necessary to avoid division by zero.
     Ret = -1;
     return [Ret,Theta]; 
   end
   
-  // 
+  // Calcualte points Fi(x,y,z) and Gi(x,y,z)
   // --------------------------------------------
   
   y1 = -rf; 
@@ -157,7 +156,7 @@ function [Ret,Theta] = __d3rCalcJointAngle ( Config,TCP0 )
   angle = atan(-zj/(y1 - yj)) + k;
 
   // --------------------------------------------
-  
+
   Ret = 1;
   Theta = angle;
   return [Ret,Theta];         

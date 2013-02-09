@@ -2,7 +2,7 @@
 // DirectKinem.sci
 // =================================================================================
 
-function [Ret,TCP0] = d3rDirectKinem ( KinemParams, Joints )
+function [Ret, TCP0] = d3rDirKinem (KinemParams, Joints)
 //
 // DESCRIPTION
 //  Solves the Direct Kinematics problem of a delta-3 robot. 
@@ -41,7 +41,7 @@ function [Ret,TCP0] = d3rDirectKinem ( KinemParams, Joints )
   theta2 = Joints(2);
   theta3 = Joints(3);
   
-  //
+  // Solve kinematics
   // --------------------------------------------
   
   ac = rf - re;
@@ -63,8 +63,8 @@ function [Ret,TCP0] = d3rDirectKinem ( KinemParams, Joints )
   
   d2 = ac + lf*cos(theta2);
   
-  x2 = (d2)*c30;
-  y2 = (d2)*s30;
+  x2 = d2*c30;
+  y2 = d2*s30;
   z2 = -lf*sin(theta2);
   
   G2p = [x2 y2 z2];
@@ -112,7 +112,7 @@ function [Ret,TCP0] = d3rDirectKinem ( KinemParams, Joints )
  
   if D < 0 | A == 0.0 then
     
-    // ERROR - non-existing point
+    // ERROR - Non-existing point
     Ret = -1;
     TCP0 = [ 0,0,0 ]';
     return [Ret,TCP0]; 	 
@@ -137,3 +137,4 @@ function [Ret,TCP0] = d3rDirectKinem ( KinemParams, Joints )
 endfunction 
 
 // =================================================================================
+

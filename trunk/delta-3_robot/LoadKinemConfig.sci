@@ -2,7 +2,7 @@
 // LoadKinemConfig.sci
 // =================================================================================
 
-function [Ret,KinemParams] = d3rLoadKinemConfig ( Model )
+function [Ret,KinemParams] = d3rLoadKinemConfig (Model)
 //
 // DESCRIPTION
 //  Load configuration (rf,lf,le,re) parameters of a delta-3 robot
@@ -20,16 +20,16 @@ function [Ret,KinemParams] = d3rLoadKinemConfig ( Model )
   
   select Model
     
-    // Trossen Robotics web
-    // http://forums.trossenrobotics.com/tutorials/introduction-129/delta-robot-kinematics-3276/
+  // Trossen Robotics web
+  // http://forums.trossenrobotics.com/tutorials/introduction-129/delta-robot-kinematics-3276/
   case "LegoDelta" then
     f  = 132.01114;
     lf = 112.0;
     le = 232.0;
     e  = 33.19764;
     
-    // MicroDELTA-240
-    // Page 46 in DSc. report of R.Clavel, 1991
+  // MicroDELTA-240
+  // Page 46 in DSc. report of R.Clavel, 1991
   case "MicroDELTA-240"
     // f = RA*(2/tan(30)) = RA*(2*sqrt(3))
     rf = 67;
@@ -38,7 +38,7 @@ function [Ret,KinemParams] = d3rLoadKinemConfig ( Model )
     // e = RB*(2/tan(30)) = RB*(2*sqrt(3))
     re = 17;
     
-    // Unknown model      
+  // Unknown model      
   else
     errMsg = sprintf( "Unknown robot model: %s",Model );
     
