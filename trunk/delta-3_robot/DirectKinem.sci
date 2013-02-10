@@ -7,7 +7,7 @@ function [Ret, TCP0] = d3rDirKinem (KinemParams, Joints)
 // DESCRIPTION
 //  Solves the Direct Kinematics problem of a delta-3 robot. 
 // PARAMETERS
-//  KinemParams [IN] : Kinematics parameters [1x4].
+//  KinemParams [IN] : Kinematics parameters [rf,lf,le,re].
 //  Joints      [IN] : Position [j1,j2,j3]' in JCS (radians).
 //  TCP0       [OUT] : Pose [x,y,z]' in RCS.
 // RETURN

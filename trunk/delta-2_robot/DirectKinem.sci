@@ -7,14 +7,14 @@ function [Ret, TCP0] = d2rDirKinem (KinemParams, Joints)
 // DESCRIPTION
 //  Solves the Direct Kinematics problem of a delta-2 robot. 
 // PARAMETERS
-//  KinemParams [IN] : Kinematics parameters [1x4].
+//  KinemParams [IN] : Kinematics parameters [rf,lf,le,re].
 //  Joints      [IN] : Position [j1,j2]' in JCS (radians).
 //  TCP0       [OUT] : Pose [x,y,z]' in RCS.
 // RETURN
 //  Ret : Success (1) or error (<0)
 //
 
-   Ret = 1;
+  Ret = 1;
   TCP0 = zeros(3,1);
   
   // Inputs

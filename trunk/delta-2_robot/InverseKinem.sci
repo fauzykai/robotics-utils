@@ -7,7 +7,7 @@ function [Ret, Joints] = d2rInvKinem (KinemParams, TCP0)
 // DESCRIPTION
 //  Solves the Inverse Kinematics problem of a delta-2 robot. 
 // PARAMETERS
-//  KinemParams [IN] : Kinematics parameters [1x4].
+//  KinemParams [IN] : Kinematics parameters [rf,lf,le,re].
 //  TCP0        [IN] : Pose [x,y,z]' in RCS.
 //  Joints     [OUT] : Position [j1,j2,j3]' in JCS (radians).
 // RETURN
@@ -36,8 +36,6 @@ function [Ret, Joints] = d2rInvKinem (KinemParams, TCP0)
   x0 = TCP0(1);
   z0 = TCP0(3);
   
-  cfgPars = KinemParams;
-  
   // Solve IK of each leg
   // --------------------------------------------
   
@@ -50,7 +48,7 @@ function [Ret, Joints] = d2rInvKinem (KinemParams, TCP0)
   x = x0;
   z = z0;
   
-  [status,theta1] = __d2rCalcJointAngle( cfgPars,[x,0,z] );
+  [status,theta1] = __d2rCalcJointAngle( KinemParams,[x,0,z] );
   if status <> 1 then
     Ret = -1;
     return [Ret,Joints];
@@ -63,7 +61,7 @@ function [Ret, Joints] = d2rInvKinem (KinemParams, TCP0)
   x = x0*c180 - z0*s180;
   z = z0;
   
-  [status,theta2] = __d2rCalcJointAngle( cfgPars,[x,0,z] );  
+  [status,theta2] = __d2rCalcJointAngle( KinemParams,[x,0,z] );  
   if status <> 1 then
     Ret = -2;
     return [Ret,Joints];
@@ -80,7 +78,7 @@ endfunction
 
 // ---------------------------------------------------------------------------------
 
-function [Ret,Theta] = __d2rCalcJointAngle ( Config,TCP0 )
+function [Ret, Theta] = __d2rCalcJointAngle (KinemParams, TCP0)
 //
 // DESCRIPTION
 //  Calculates the joint value that is defined as the angle on the YZ plane
@@ -92,10 +90,10 @@ function [Ret,Theta] = __d2rCalcJointAngle ( Config,TCP0 )
   // Inputs
   // --------------------------------------------
   
-  rf = Config(1);
-  lf = Config(2);
-  le = Config(3);
-  re = Config(4);
+  rf = KinemParams(1);
+  lf = KinemParams(2);
+  le = KinemParams(3);
+  re = KinemParams(4);
   
   tcp_x = TCP0(1);
   tcp_z = TCP0(3);
