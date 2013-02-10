@@ -2,12 +2,12 @@
 // InverseKinem.sci
 // =================================================================================
 
-function [Ret, Joints] = d3rInvKinem ( KinemParams, TCP0 )
+function [Ret, Joints] = d3rInvKinem (KinemParams, TCP0)
 //
 // DESCRIPTION
 //  Solves the Inverse Kinematics problem of a delta-3 robot. 
 // PARAMETERS
-//  KinemParams [IN] : Kinematics parameters [1x4].
+//  KinemParams [IN] : Kinematics parameters [rf,lf,le,re].
 //  TCP0        [IN] : Pose [x,y,z]' in RCS.
 //  Joints     [OUT] : Position [j1,j2,j3]' in JCS (radians).
 // RETURN
@@ -33,8 +33,6 @@ function [Ret, Joints] = d3rInvKinem ( KinemParams, TCP0 )
   y0 = TCP0(2);
   z0 = TCP0(3);
   
-  cfgPars = KinemParams;
-  
   // Solve IK of each leg
   // --------------------------------------------
   
@@ -49,7 +47,7 @@ function [Ret, Joints] = d3rInvKinem ( KinemParams, TCP0 )
   y = y0;
   z = z0;
   
-  [status,theta1] = __d3rCalcJointAngle( cfgPars,[x,y,z] );
+  [status,theta1] = __d3rCalcJointAngle( KinemParams,[x,y,z] );
   if status ~= 1
     Ret = -1;
     Joints = [theta1,theta2,theta3]';
@@ -63,7 +61,7 @@ function [Ret, Joints] = d3rInvKinem ( KinemParams, TCP0 )
   y = y0*c240 + x0*s240;
   z = z0;
  
-  [status,theta2] = __d3rCalcJointAngle( cfgPars,[x,y,z] );  
+  [status,theta2] = __d3rCalcJointAngle( KinemParams,[x,y,z] );  
   if status ~= 1
     Ret = -2;
     Joints = [theta1,theta2,theta3]';
@@ -77,7 +75,7 @@ function [Ret, Joints] = d3rInvKinem ( KinemParams, TCP0 )
   y = y0*c120 + x0*s120;
   z = z0;
   
-  [status,theta3] = __d3rCalcJointAngle( cfgPars,[x,y,z] );  
+  [status,theta3] = __d3rCalcJointAngle( KinemParams,[x,y,z] );  
   if status ~= 1
     Ret = -3;
     Joints = [theta1,theta2,theta3]';
@@ -95,7 +93,7 @@ endfunction
 
 // ---------------------------------------------------------------------------------
 
-function [Ret,Theta] = __d3rCalcJointAngle ( Config,TCP0 )
+function [Ret, Theta] = __d3rCalcJointAngle (KinemParams, TCP0)
 //
 // DESCRIPTION
 //  Calculates the joint value that is defined as the angle on the YZ plane
@@ -107,10 +105,10 @@ function [Ret,Theta] = __d3rCalcJointAngle ( Config,TCP0 )
   // Inputs
   // --------------------------------------------
   
-  rf = Config(1);
-  lf = Config(2);
-  le = Config(3);
-  re = Config(4);
+  rf = KinemParams(1);
+  lf = KinemParams(2);
+  le = KinemParams(3);
+  re = KinemParams(4);
   
   x0 = TCP0(1);
   y0 = TCP0(2);
